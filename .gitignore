@@ -1,0 +1,39 @@
+# ── Python / Backend ──────────────────────────────────────────────
+backend/venv/
+backend/__pycache__/
+backend/app/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+
+# Base de datos local (generada automáticamente)
+backend/vetia.db
+
+# Variables de entorno con API keys (NUNCA subir)
+backend/.env
+
+# ── Node / Frontend ───────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# ── Archivos de editor ────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# ── Logs ──────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# ── Archivos temporales ───────────────────────────────────────────
+*.tmp
+*.swp
+*.suo
+*.sln
