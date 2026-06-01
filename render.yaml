@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: vetia-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEEPGRAM_MODEL
+        value: nova-3
+      - key: DEEPGRAM_LANGUAGE
+        value: multi
+      - key: LLM_MODEL
+        value: gpt-4o-mini
+      - key: DEBUG
+        value: false
+      - key: MAX_AUDIO_DURATION_SECONDS
+        value: 900
+      - key: ALLOWED_AUDIO_FORMATS
+        value: webm,mp3,wav,m4a,ogg
