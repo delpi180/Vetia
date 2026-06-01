@@ -15,18 +15,27 @@ export default function PasoProcesando({ audioBlob, onResultado, onError }) {
     const t2 = setTimeout(() => setEtapa(2), 8000)
 
     const procesar = async () => {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 90000)
       try {
         const formData = new FormData()
         const ext = audioBlob.type.includes('webm') ? 'webm' : 'wav'
         formData.append('audio', audioBlob, `consulta.${ext}`)
-        const resp = await fetch('/api/consulta/procesar', { method: 'POST', body: formData })
+        const resp = await fetch('/api/consulta/procesar', { method: 'POST', body: formData, signal: controller.signal })
+        clearTimeout(timeoutId)
         if (!resp.ok) {
-          const err = await resp.json()
-          throw new Error(err.detail || `Error ${resp.status}`)
+          let detalle = `Error ${resp.status}`
+          try { const err = await resp.json(); detalle = err.detail || detalle } catch { /* respuesta no es JSON */ }
+          throw new Error(detalle)
         }
         onResultado(await resp.json())
       } catch (e) {
-        onError(e.message)
+        clearTimeout(timeoutId)
+        if (e.name === 'AbortError') {
+          onError('El servidor tardó demasiado en responder. Es posible que esté iniciando — espera 30 segundos e intenta de nuevo.')
+        } else {
+          onError(e.message)
+        }
       }
     }
     procesar()
